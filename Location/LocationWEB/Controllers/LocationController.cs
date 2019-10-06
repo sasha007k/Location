@@ -9,7 +9,6 @@ namespace LocationWEB.Controllers
     public class LocationController : Controller
     {
         private readonly ILocationService _locationService;
-        private static LocationModel loc = new LocationModel();
 
         public LocationController(ILocationService locationService)
         {
@@ -18,26 +17,20 @@ namespace LocationWEB.Controllers
 
         public IActionResult Location()
         {
-            return View(loc);
+            return View(new LocationModel());
         }
 
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EnterAddress(AddressModel addres)
+        public async Task<IActionResult> GetLocation(AddressModel addres)
         {
-            if (!ModelState.IsValid)
-            {
-                return RedirectToAction("Location");
-            }
-
-            var location = await _locationService.GetLocation(addres);
+            var location = await _locationService.GetLocationAsync(addres);
             if (location == null)
             {
-                return RedirectToAction("Location");
+                return View("Location", new LocationModel());
             }
-            loc = location;
-            loc.Address = addres.Address;
+            location.Address = addres.Address;
 
-            return RedirectToAction("Location");
+            return View("Location", location);
         }
     }
 }

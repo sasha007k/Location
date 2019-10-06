@@ -1,34 +1,36 @@
 ﻿using System.Threading.Tasks;
 using Data.Models;
-using OpenCage.Geocode;
+using System.Net.Http;
+using System.Xml.Linq;
 
 namespace Services.Services
 {
     public class LocationService : ILocationService
     {
-        public async Task<LocationModel> GetLocation(AddressModel address)
+        public async Task<LocationModel> GetLocationAsync(AddressModel address)
         {
-            string key = "9c0b941084e74fdd8ffc27cf8625b566";
+            string apiKey = "AIzaSyAqAed3TFiripsTx_CL_ReK3jOoBDqmvF0";
 
-            var gc = new Geocoder(key);
-            var result = gc.Geocode(address.Address);
+            var requestUri = string.Format("https://maps.googleapis.com/maps/api/geocode/xml?address={0}&key={1}", address.Address, apiKey);
 
-            if (result.Status.Message == "OK")
+            if (address.Address != null)
             {
-                var results = result.Results;
-                
-                if (results.Length == 0)
+                using (var client = new HttpClient())
                 {
-                    return null;             
+                    var request = await client.GetAsync(requestUri);
+                    var content = await request.Content.ReadAsStringAsync();
+                    var xmlDocument = XDocument.Parse(content);
+
+
+                    XElement result = xmlDocument.Element("GeocodeResponse").Element("result");
+                    XElement locationElement = result.Element("geometry").Element("location");
+                    string latitude = (string)locationElement.Element("lat");
+                    string longitude = (string)locationElement.Element("lng");
+
+                    LocationModel location = new LocationModel(latitude, longitude);
+                    return location;
                 }
-                var dms = results[0].Annotations.DMS;
-                var latitude = dms.Lat;
-                var longitude = dms.Lng;
-                LocationModel loc = new LocationModel(latitude, longitude);
-
-                return loc;
             }
-
             return null;
         }
     }

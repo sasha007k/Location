@@ -1,4 +1,4 @@
-﻿namespace Data.Models
+﻿namespace LocationWEB
 {
     public class ErrorViewModel
     {
