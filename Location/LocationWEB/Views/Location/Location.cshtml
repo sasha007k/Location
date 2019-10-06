@@ -1,0 +1,48 @@
+﻿@model Data.Models.LocationModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Location Page";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <style>
+        .welcome {
+            padding-bottom: 40px; 
+            text-align: center;
+        }
+
+        .enterAddress {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="welcome">
+        <h1 class="display-4"><b>Welcome</b></h1>
+    </div>
+
+    <div class="enterAddress">
+        @await Html.PartialAsync("EnterAddressPartial", new AddressModel())
+    </div>
+
+    <div align="center" style="font-size:30px">
+        <p>
+            <b>Address:</b> @Model.Address
+            <br>
+            <b>Latitude:</b>  @Model.Latitude
+            <br>
+            <b>Longitude:</b>  @Model.Longitude
+        </p>
+    </div>
+
+
+</body>
+</html>
