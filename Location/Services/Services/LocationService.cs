@@ -34,9 +34,8 @@ namespace Services.Services
                     var latitude = root.results[0].geometry.location.lat.ToString();
                     var longitude = root.results[0].geometry.location.lng.ToString();
 
-                    LocationModel location = new LocationModel(latitude, longitude);
-
-                    OperationResult<LocationModel> coordinates = new OperationResult<LocationModel>(location);
+                    var location = new LocationModel(latitude, longitude);
+                    var coordinates = new OperationResult<LocationModel>(location);
 
                     return coordinates;
                 }
