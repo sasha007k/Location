@@ -33,13 +33,16 @@
         @await Html.PartialAsync("EnterAddressPartial", new AddressModel())
     </div>
 
-    <div align="center" style="font-size:30px">
-        <p>
-            <b>Latitude:</b>  @Model.Latitude
-            <br>
-            <b>Longitude:</b>  @Model.Longitude
-        </p>
-    </div>
+    @if (Model.Latitude != null && Model.Longitude != null)
+    {
+        <div align="center" style="font-size:30px">
+            <p>
+                <b>Latitude:</b>  @Model.Latitude
+                <br>
+                <b>Longitude:</b>  @Model.Longitude
+            </p>
+        </div>
+    }
 
 
 </body>

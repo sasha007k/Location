@@ -12,17 +12,17 @@ namespace Services.Services
     {
         private readonly HttpClient _client;
         private readonly GoogleApiKey _apiKey;
-        public LocationService(HttpClient client, IOptionsMonitor<GoogleApiKey> options)
+        public LocationService(HttpClient client, IOptions<GoogleApiKey> options)
         {
             _client = client;
-            _apiKey = options.CurrentValue;
+            _apiKey = options.Value;
             _client.BaseAddress = new Uri(_apiKey.Url);
             
         }
         
         public async Task<LocationModel> GetLocationAsync(AddressModel address)
         {
-            var result = await _client.GetAsync(string.Format("geocode/json?address={0}&key={1}", address.Address, _apiKey.ApiKey));
+            var result = await _client.GetAsync($"geocode/json?address={address.Address}&key={_apiKey.ApiKey}");
 
             if (result.IsSuccessStatusCode)
             {

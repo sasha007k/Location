@@ -3,13 +3,6 @@
     public class GoogleApiKey
     {
         public string Url { get; set; }
-        public string ApiKey { get; set; }
-        public GoogleApiKey()
-        {
-            Url = "";
-            ApiKey = "";
-        }
-
-        
+        public string ApiKey { get; set; }       
     }
 }
