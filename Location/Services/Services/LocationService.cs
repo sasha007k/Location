@@ -11,13 +11,13 @@ namespace Services.Services
     public class LocationService : ILocationService
     {
         private readonly HttpClient _client;
-        private const string _baseUrl = "https://maps.googleapis.com/maps/api/";
         private readonly GoogleApiKey _apiKey;
         public LocationService(HttpClient client, IOptionsMonitor<GoogleApiKey> options)
         {
             _client = client;
-            _client.BaseAddress = new Uri(_baseUrl);
             _apiKey = options.CurrentValue;
+            _client.BaseAddress = new Uri(_apiKey.Url);
+            
         }
         
         public async Task<LocationModel> GetLocationAsync(AddressModel address)
@@ -31,15 +31,8 @@ namespace Services.Services
 
                 if (root.status == "OK")
                 {
-                    var latitude = "";
-                    var longitude = "";
-
-                    foreach (var item in root.results)
-                    {
-                        latitude = item.geometry.location.lat.ToString();
-                        longitude = item.geometry.location.lng.ToString();
-                    }
-
+                    var latitude = root.results[0].geometry.location.lat.ToString();
+                    var longitude = root.results[0].geometry.location.lng.ToString();
 
                     LocationModel location = new LocationModel(latitude, longitude);
                     return location;
