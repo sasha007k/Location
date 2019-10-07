@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Data.Models;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +32,9 @@ namespace LocationWEB
             services.AddScoped<ILocationService, LocationService>();
 
             services.AddHttpClient<ILocationService, LocationService>();
+
+            services.AddOptions();
+            services.Configure<GoogleApiKey>(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,11 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Data.Models;
 using System.Net.Http;
-using System.Xml.Linq;
 using System;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using Data.Models.ParseApi;
+using Microsoft.Extensions.Options;
 
 namespace Services.Services
 {
@@ -13,16 +12,17 @@ namespace Services.Services
     {
         private readonly HttpClient _client;
         private const string _baseUrl = "https://maps.googleapis.com/maps/api/";
-        public LocationService(HttpClient client)
+        private readonly GoogleApiKey _apiKey;
+        public LocationService(HttpClient client, IOptionsMonitor<GoogleApiKey> options)
         {
             _client = client;
             _client.BaseAddress = new Uri(_baseUrl);
+            _apiKey = options.CurrentValue;
         }
         
         public async Task<LocationModel> GetLocationAsync(AddressModel address)
         {
-            string apiKey = "AIzaSyAqAed3TFiripsTx_CL_ReK3jOoBDqmvF0";
-            var result = await _client.GetAsync(string.Format("geocode/json?address={0}&key={1}", address.Address, apiKey));
+            var result = await _client.GetAsync(string.Format("geocode/json?address={0}&key={1}", address.Address, _apiKey.ApiKey));
 
             if (result.IsSuccessStatusCode)
             {
