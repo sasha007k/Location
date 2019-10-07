@@ -15,10 +15,10 @@ namespace Data.Models
         {
 
         }
-        public OperationResult(TIn responseModel, bool success)
+        public OperationResult(TIn responseModel)
         {
             ResponseModel = responseModel;
-            Success = success;
+            Success = true;
         }
 
         public OperationResult(bool success, string message)

@@ -36,15 +36,13 @@ namespace Services.Services
 
                     LocationModel location = new LocationModel(latitude, longitude);
 
-                    OperationResult<LocationModel> coordinates = new OperationResult<LocationModel>(location, true);
+                    OperationResult<LocationModel> coordinates = new OperationResult<LocationModel>(location);
 
                     return coordinates;
                 }
             }
 
-            OperationResult<LocationModel> coordinates1 = new OperationResult<LocationModel>(false, "This address doesn't exist. Please, try another one.");
-
-            return coordinates1;
+            return new OperationResult<LocationModel>(false, "This address doesn't exist. Please, try another one.");
         }
     }
 }
