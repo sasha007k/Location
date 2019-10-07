@@ -8,10 +8,10 @@
 
         public LocationModel()
         { }
-        public LocationModel(string lat, string lng)
+        public LocationModel(string latitude, string longitude)
         {
-            Latitude = lat;
-            Longitude = lng;
+            Latitude = latitude;
+            Longitude = longitude;
         }
     }
 }

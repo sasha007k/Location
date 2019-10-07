@@ -3,6 +3,9 @@ using Data.Models;
 using System.Net.Http;
 using System.Xml.Linq;
 using System;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using Data.Models.ParseApi;
 
 namespace Services.Services
 {
@@ -19,21 +22,28 @@ namespace Services.Services
         public async Task<LocationModel> GetLocationAsync(AddressModel address)
         {
             string apiKey = "AIzaSyAqAed3TFiripsTx_CL_ReK3jOoBDqmvF0";
-            var result = await _client.GetAsync(string.Format("geocode/xml?address={0}&key={1}", address.Address, apiKey));
+            var result = await _client.GetAsync(string.Format("geocode/json?address={0}&key={1}", address.Address, apiKey));
 
             if (result.IsSuccessStatusCode)
             {
                 var content = await result.Content.ReadAsStringAsync();
-                var xmlDocument = XDocument.Parse(content);
+                var root = JsonConvert.DeserializeObject<RootObject>(content);
+
+                if (root.status == "OK")
+                {
+                    var latitude = "";
+                    var longitude = "";
+
+                    foreach (var item in root.results)
+                    {
+                        latitude = item.geometry.location.lat.ToString();
+                        longitude = item.geometry.location.lng.ToString();
+                    }
 
 
-                XElement parse = xmlDocument.Element("GeocodeResponse").Element("result");
-                XElement locationElement = parse.Element("geometry").Element("location");
-                string latitude = (string)locationElement.Element("lat");
-                string longitude = (string)locationElement.Element("lng");
-
-                LocationModel location = new LocationModel(latitude, longitude);
-                return location;
+                    LocationModel location = new LocationModel(latitude, longitude);
+                    return location;
+                }                
             }
 
                         

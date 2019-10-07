@@ -23,6 +23,10 @@ namespace LocationWEB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> GetLocation(AddressModel addres)
         {
+            if (string.IsNullOrEmpty(addres.Address))
+            {
+                return View("Location", new LocationModel());
+            }
             var location = await _locationService.GetLocationAsync(addres);
             if (location == null)
             {
