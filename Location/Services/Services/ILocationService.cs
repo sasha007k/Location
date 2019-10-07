@@ -5,6 +5,6 @@ namespace Services.Services
 {
     public interface ILocationService
     {
-        Task<LocationModel> GetLocationAsync(AddressModel address);
+        Task<OperationResult<LocationModel>> GetLocationAsync(AddressModel address);
     }
 }

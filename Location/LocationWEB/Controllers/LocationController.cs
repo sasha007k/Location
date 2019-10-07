@@ -17,7 +17,7 @@ namespace LocationWEB.Controllers
 
         public IActionResult Location()
         {
-            return View(new LocationModel());
+            return View(new OperationResult<LocationModel>());
         }
 
         [ValidateAntiForgeryToken]
@@ -25,13 +25,9 @@ namespace LocationWEB.Controllers
         {
             if (string.IsNullOrEmpty(addres.Address))
             {
-                return View("Location", new LocationModel());
+                return View("Location", new OperationResult<LocationModel>(false, "Please, enter address."));
             }
             var location = await _locationService.GetLocationAsync(addres);
-            if (location == null)
-            {
-                return View("Location", new LocationModel());
-            }
 
             return View("Location", location);
         }

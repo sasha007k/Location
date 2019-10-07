@@ -4,11 +4,27 @@ using System.Text;
 
 namespace Data.Models
 {
-    public class OperationResult<T>
+    public class OperationResult<TIn>
     {
-        public T Location { get; set; }
+        public TIn ResponseModel { get; set; }
         public bool Success { get; set; }
 
-        public const string Message = "Please, input another address";
+        public string Message { get; set; }
+
+        public OperationResult()
+        {
+
+        }
+        public OperationResult(TIn responseModel, bool success)
+        {
+            ResponseModel = responseModel;
+            Success = success;
+        }
+
+        public OperationResult(bool success, string message)
+        {
+            Success = success;
+            Message = message;
+        }
     }
 }

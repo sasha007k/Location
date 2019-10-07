@@ -1,4 +1,4 @@
-﻿@model Data.Models.LocationModel
+﻿@model Data.Models.OperationResult<LocationModel>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
@@ -33,16 +33,21 @@
         @await Html.PartialAsync("EnterAddressPartial", new AddressModel())
     </div>
 
-    @if (Model.Latitude != null && Model.Longitude != null)
-    {
-        <div align="center" style="font-size:30px">
-            <p>
-                <b>Latitude:</b>  @Model.Latitude
+    <div align="center" style="font-size:30px">
+        <p>
+            @if (Model.Success == true)
+            {
+                <b>Latitude:</b>  @Model.ResponseModel.Latitude
                 <br>
-                <b>Longitude:</b>  @Model.Longitude
-            </p>
-        </div>
-    }
+                <b>Longitude:</b>  @Model.ResponseModel.Longitude
+            }
+            else
+            {
+                <b>@Model.Message</b>
+            }
+        </p>
+    </div>
+
 
 
 </body>

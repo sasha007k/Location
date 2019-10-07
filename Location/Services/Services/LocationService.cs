@@ -19,8 +19,8 @@ namespace Services.Services
             _client.BaseAddress = new Uri(_apiKey.Url);
             
         }
-        
-        public async Task<LocationModel> GetLocationAsync(AddressModel address)
+
+        public async Task<OperationResult<LocationModel>> GetLocationAsync(AddressModel address)
         {
             var result = await _client.GetAsync($"geocode/json?address={address.Address}&key={_apiKey.ApiKey}");
 
@@ -35,12 +35,16 @@ namespace Services.Services
                     var longitude = root.results[0].geometry.location.lng.ToString();
 
                     LocationModel location = new LocationModel(latitude, longitude);
-                    return location;
-                }                
+
+                    OperationResult<LocationModel> coordinates = new OperationResult<LocationModel>(location, true);
+
+                    return coordinates;
+                }
             }
 
-                        
-            return null;
+            OperationResult<LocationModel> coordinates1 = new OperationResult<LocationModel>(false, "This address doesn't exist. Please, try another one.");
+
+            return coordinates1;
         }
     }
 }
