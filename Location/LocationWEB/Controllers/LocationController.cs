@@ -28,7 +28,6 @@ namespace LocationWEB.Controllers
             {
                 return View("Location", new LocationModel());
             }
-            location.Address = addres.Address;
 
             return View("Location", location);
         }
